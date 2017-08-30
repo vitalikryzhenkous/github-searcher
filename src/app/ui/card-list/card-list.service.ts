@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class CardListService {
     public storeUser = new Subject();
@@ -22,8 +22,8 @@ export class CardListService {
     }
 
     public getIntialData(action) {
-        switch(action) {
-            case 'GET_USER': 
+        switch (action) {
+            case 'GET_USER':
                 return this.storeUser.asObservable();
             case 'GET_REPOS':
                 return this.storeRepos.asObservable();
@@ -31,4 +31,5 @@ export class CardListService {
                 console.log(`Default is Fire at getIntialData | action: ${action}`);
         }
     }
+
 }

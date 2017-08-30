@@ -1,4 +1,4 @@
-import { IUser } from '../../models/IUser.model';
+import { IUser } from './../../../models/IUser.model';
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -12,7 +12,6 @@ import { Component, Input } from '@angular/core';
                         <div class="caption-box">
                             <span>{{user.name}}</span>
                             <span>{{user.created_at | date }}</span>
-                            
                         </div>
                         <div class="caption-box">
                             <span>{{user.login}}</span>
@@ -26,10 +25,16 @@ import { Component, Input } from '@angular/core';
                 </figure>
             </div>
             <div class="card-item__right">
-                <card-stats-component [stats]="user"></card-stats-component>
+                <card-stats-component [stats]="user" [totalRepos]="repos?.length"></card-stats-component>
 
                 <div class="repos_wrapper">
-                    <card-repo-component [repos]="repos"></card-repo-component>
+                    <card-repo-component [repos]="repos" [showCount]="count"></card-repo-component>
+                </div>
+
+                <div class="loading-zone">
+                    <button class="load-more"
+                            [disabled]="( count < repos?.length ) ? false : true"
+                            (click)="handleMore()">load more</button >
                 </div>
             </div>
         </div>
@@ -37,7 +42,6 @@ import { Component, Input } from '@angular/core';
     styles: [`
         .card-item__wrapper {
             width: 100%;
-            height: 450px;
             background-color: #eee;
             border-radius: 2px;
             padding: 20px;
@@ -59,8 +63,8 @@ import { Component, Input } from '@angular/core';
         }
         figure img {
             width: 100%;
-            object-fit: cover;
-            height: 225px;
+            object-fit: fill;
+            height: 300px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         }
         figcaption .caption-box {
@@ -75,19 +79,31 @@ import { Component, Input } from '@angular/core';
         .caption-box span:first-child {
             display: block;
         }
-      
         .card-item__right {
             flex: 10;
-            background: #fafafa;
         }
-        .repos_wrapper {
-            max-height: 368px;
-            overflow-y: hidden;
+        .loading-zone {
+            width: 100%;
+        }
+        .load-more {
+            padding: 5px 10px;
+            text-transform: uppercase;
+            outline: none;
+            width: 100%;
         }
     `]
 })
 
-export class CardComponent  { 
+export class CardComponent  {
     @Input() public user: IUser | {};
     @Input() public repos: any[] ;
+    public count = 4;
+    public disableLoadMore: boolean;
+
+    public handleMore() {
+        if ( this.count < this.repos.length ) {
+            this.count = (this.count + 1) + 1;
+        }
+
+    }
 }

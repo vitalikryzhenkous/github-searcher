@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
     selector: 'app-header',
     template: `
         <header class="header-container">
-            <div class="header-item name"><span>{{ dataObj?.name }}</span></div>
+            <div class="header-item name"><span>{{ ownerName }}</span></div>
             <div class="header-item avatar">
             <figure>
                 <img [src]="dataObj?.avatar_url" [alt]="dataObj?.name" />
@@ -35,6 +35,5 @@ import { Component, Input } from '@angular/core';
     `]
 })
 export class HeaderComponent {
-    @Input() public dataObj: string;
-    public ownerName: string = 'Vitalii Ryzhenko'
+    public ownerName = 'Vitalii Ryzhenko';
 }
