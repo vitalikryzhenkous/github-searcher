@@ -63,7 +63,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
             </div>
 
             <div class="sorting-wrapper">
-                <div class="sorting-item" *ngFor="let sort of sortings">
+                <div class="sorting-item" *ngFor="let sort of sortings;">
                     <label for="name">{{ sort?.title }}</label>
                     <input type="text"
                            [disabled]="sort?.selected"

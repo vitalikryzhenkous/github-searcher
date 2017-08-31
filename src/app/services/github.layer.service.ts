@@ -19,14 +19,14 @@ export class GitHubLayerService {
 
     // Get all data about user
     public getUser() {
-        const URL = `http://api.github.com/users/${this._userName}?client_id=${this._clientID}&client_secret=${this._clientSecret}`;
+        const URL = `https://api.github.com/users/${this._userName}?client_id=${this._clientID}&client_secret=${this._clientSecret}`;
         return this._http.get(URL)
                          .map( (res) => res.json() );
     }
 
     // Get all data about user repos
     public getUserRepos() {
-        const URL = `http://api.github.com/users/${this._userName}/repos?client_id=${this._clientID}&client_secret=${this._clientSecret}`;
+        const URL = `https://api.github.com/users/${this._userName}/repos?client_id=${this._clientID}&client_secret=${this._clientSecret}`;
         return this._http.get(URL)
                          .map( (res) => res.json() );
     }
