@@ -49,6 +49,26 @@ import { Component, Input } from '@angular/core';
         border-radius: 100%;
         margin-right: -10px;
     }
+    @media screen and (min-width: 768px) and (max-width: 1160px) { 
+        .stats-container {
+            justify-content: space-between;
+        }
+     }
+     @media screen and (min-width: 320px ) and (max-width: 767px) { 
+        .stats-container {
+            height: 80px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .stats-item {
+            height: 0px;
+            margin-right: 0;
+        }
+        .stats-item:nth-child(2) {
+            order: 3;
+        }
+      }
     ` ]
 })
 export class CardStatsComponent {
