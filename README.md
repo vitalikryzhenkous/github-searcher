@@ -1,4 +1,4 @@
-# Welcome to Default Repo Branch of "GitHubSearcher / aka blamer :) "
+## Welcome to Default Repo Branch of "GitHubSearcher / aka blamer :) "
 
-This project is [link to gh-pages ](https://vitalikryzhenkous.github.io/github-searcher/)
+#### Project is hosted at  [link to gh-pages](https://vitalikryzhenkous.github.io/github-searcher/)
 
