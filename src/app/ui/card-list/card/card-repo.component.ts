@@ -105,6 +105,6 @@ export class CardRepoComponent {
     public testContent: 'yes';
     constructor(  ) {}
     public proceedToRepo(repo) {
-        console.log(repo);
+        (repo.fork) ? window.location.href = `${repo.forks_url}` : window.location.href = `${repo.html_url}`;
     }
 }

@@ -43,7 +43,7 @@ export class MainComponent implements OnInit, OnDestroy {
                                             .subscribe((user) => { console.log(user); this._github.storeInitialState('STORE_USER', user); },
                                                        (err) =>  console.error(err) );
         this.subscriptionRepos = this._github.getUserRepos()
-                                             .subscribe((repos) => { this.repos$ = repos; // to render filters and sorting
+                                             .subscribe((repos) => { console.log(repos); this.repos$ = repos; // to render filters and sorting
                                                                      this._github.storeInitialState('STORE_REPOS', repos); } ,
                                                         (err) => console.error(err) );
     }
