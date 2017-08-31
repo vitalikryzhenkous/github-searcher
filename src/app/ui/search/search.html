@@ -1,0 +1,69 @@
+<div class="search-form__container">
+    <form>
+        <!--(ngModelChange)="searchValueChanges($event)"-->
+        <input class="input txt"
+               type="text"
+               name="searchParams"
+               #search
+               required
+               autofocus
+               autocomplete
+               placeholder="Will show cards with repositories, filters, and sorting."
+               title="type here search parameters"/>
+
+        <input type="submit"
+               class="input btn"
+               (click)="handleSubmitAction(search.value)"
+               value="search"/>
+    </form>
+</div>
+<div class="filte-sorting__container" *ngIf="isHide">
+    <div class="filter-wrapper">
+        <div class="filter-item">
+            <label for="issue">has open issue</label>
+            <input type="checkbox"
+                   name="issue"
+                   [checked]="checkedState"
+                  (click)="handleCommonFilter('has_issues', $event.target.checked)"/>
+        </div>
+        <div class="filter-item">
+            <label for="topics">has topics</label>
+            <input type="checkbox" name="topics"/>
+        </div>
+        <div class="filter-item">
+            <label for="started">started</label>
+            <input type="text" name="started"/>
+        </div>
+        <div class="filter-item">
+            <label for="update">update after</label>
+            <input type="text" name="update"/>
+        </div>
+        <div class="filter-item">
+            <label for="update">type</label>
+            <select name="type">
+                <option value="all">all</option>
+                <option value="forks">forks</option>
+                <option value="sources">sources</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="update">language</label>
+            <select name="lang" (change)="handleCommonFilter('language', $event.target.value)">
+                <option [value]="repo?.language" *ngFor="let repo of reposData | searchUnique">
+                    {{ (repo?.language) ? repo?.language : 'not selected' }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="sorting-wrapper">
+        <div class="sorting-item" *ngFor="let sort of sortings;">
+            <label for="name">{{ sort?.title }}</label>
+            <input type="text"
+                   [disabled]="sort?.selected"
+                   [name]="sort?.name"
+                   (keyup)="handleCommonKeyup(sort?.key, $event.target.value)"
+                   [placeholder]="sort?.holder"/>
+        </div>
+    </div>
+</div>

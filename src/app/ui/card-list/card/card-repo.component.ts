@@ -3,10 +3,12 @@ import { Component, Input, EventEmitter } from '@angular/core';
 @Component({
     selector: 'card-repo-component',
     template: `
+        <dialog-window [cardRepoState]="isClicked" (emitFromDialog)="handleEmitter($event)" *ngIf="isClicked">
+        </dialog-window>
         <!-- REPO CARD ITSELF -->
         <div class="repo-card"
              *ngFor="let repo of repos | slice:0:showCount"
-             (click)="proceedToRepo(repo)"
+             (click)="proceedToRepo($event, repo)"
              title="Individual repo card, where you can find data about Repo">
             <!-- LEFT SIDE -->
             <div class="repo-card__left" >
@@ -47,6 +49,7 @@ import { Component, Input, EventEmitter } from '@angular/core';
         transition: all 255ms cubic-bezier(0.0, 0.0, 0.2, 1);
         background: #BBDEFB;
         position: relative;
+        z-index: 1;
     }
     .repo-card:hover {
         background: #90CAF9;
@@ -57,6 +60,7 @@ import { Component, Input, EventEmitter } from '@angular/core';
     }
     .repo-card__left {
         flex: 4;
+        max-width: 245px;
         margin-left: 10px;
         padding: 10px;
         background: #fafafa;
@@ -96,15 +100,46 @@ import { Component, Input, EventEmitter } from '@angular/core';
     .action-section:first-child  {
         flex: 1;
     }
+    @media screen and (min-width: 768px) and (max-width: 1160px) { 
+        .repo-card__left {
+            max-width: 200px;
+            min-width: 200px;
+        }
+        .action-section,
+        .level-section span {
+            font-family: 'Roboto';
+            font-size: 12px;
+        }
+     }
+     @media screen and (min-width: 320px ) and (max-width: 767px) { 
+         .repo-card {
+             flex-direction: column;
+         }
+         .repo-card__left {
+             border-right: none;
+         }
+         .repo-card__right {
+             flex: 0;
+             margin-left: 10px;
+             border-top: 1px solid rgba(0,0,0, .2);
+         }
+      }
     `]
 })
 export class CardRepoComponent {
     @Input() public repos: any[];
     @Input() public showCount: any;
+
+    public isClicked: boolean;
     
     public testContent: 'yes';
     constructor(  ) {}
-    public proceedToRepo(repo) {
-        (repo.fork) ? window.location.href = `${repo.forks_url}` : window.location.href = `${repo.html_url}`;
+    public proceedToRepo(e, repo) {
+        this.isClicked = !this.isClicked;
+        // (repo.fork) ? window.location.href = `${repo.forks_url}` : window.location.href = `${repo.html_url}`;
+    }
+
+    public handleEmitter(emitValue) {
+        this.isClicked = emitValue;
     }
 }

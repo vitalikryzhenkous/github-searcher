@@ -42,11 +42,12 @@ import { Component, Input } from '@angular/core';
     styles: [`
         .card-item__wrapper {
             width: 100%;
+            max-width: 1160px;
             background-color: #eee;
             border-radius: 2px;
             padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            margin: 20px 0;
+            margin: 20px auto;
             box-sizing: border-box;
 
             display:flex;
@@ -110,14 +111,35 @@ import { Component, Input } from '@angular/core';
             background-color: rgba(0,0,0, .1);
             color: rgba(0,0,0, .1);
         }
+        @media screen and (min-width: 768px) and (max-width: 1160px) { 
+            .card-item__wrapper {
+                max-width: 760px;
+            }
+            figure img {
+                height: 263px;
+            }
+         }
+
+         @media screen and (min-width: 320px ) and (max-width: 767px) { 
+            .card-item__wrapper {
+                max-width: 300px;
+                flex-direction: column;
+            }
+            .card-item__left {
+                margin-right: 0;
+            }
+          }
     `]
 })
 
 export class CardComponent  {
     @Input() public user: IUser | {};
     @Input() public repos: any[] ;
+
     public count = 4;
     public disableLoadMore: boolean;
+
+    constructor() { }
 
     public handleMore() {
         if ( this.count < this.repos.length ) {
