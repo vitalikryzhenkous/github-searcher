@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "predeploy": "ng build --prod --base-href \"/github-searcher/"
+    "predeploy": "ng build --prod --base-href \"/github-searcher/",
+    "update": "ngh --branch=master"
 
   },
   "private": true,

@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
     selector: 'app-header',
     template: `
         <header class="header-container">
-            <div class="header-item name"><span>{{ ownerName }}</span></div>
+            <div class="header-item name"><span [routerLink]="['/']">{{ ownerName }}</span></div>
             <div class="header-item avatar">
             </div>
         </header>
@@ -21,6 +21,7 @@ import { Component, Input } from '@angular/core';
         }
         .name span {
             color: #fafafa;
+            cursor: pointer;
             font-size: 24px;
         }
         .avatar img {

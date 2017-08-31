@@ -5,7 +5,9 @@ import { Component } from '@angular/core';
   template: `
       <div class="app-wrapper">
         <app-header></app-header>
-        <app-main></app-main>
+        <div class="main">
+          <router-outlet></router-outlet>
+        </div>
         <app-footer></app-footer>
       </div>
   `,
@@ -24,7 +26,7 @@ import { Component } from '@angular/core';
       flex-direction: column;
       min-height: 100vh;
     }
-    app-main {
+    .main {
       flex: 1;
       background-color: #dadada;
     }
