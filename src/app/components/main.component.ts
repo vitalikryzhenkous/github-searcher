@@ -6,10 +6,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
     template: `
         <main>
             <search-component    (searchParams)="handleSearchValue($event)"
-                                 [reposData]="repos"></search-component>
+                                 [reposData]="repos$"></search-component>
 
-            <card-list-component [userData]="user"
-                                 [reposData]="repos"></card-list-component>
+            <card-list-component [userData]="userState"
+                                 [reposData]="reposState"></card-list-component>
         </main>
     `,
     styles: [`
@@ -21,28 +21,37 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
     `]
 })
 export class MainComponent implements OnInit, OnDestroy {
-    public user: any;
-    public repos: any;
+    public userState: any;
+    public reposState: any;
+    public repos$: any;
     public transformRepos: any;
     public subscriptionUser: Subscription;
     public subscriptionRepos: Subscription;
 
     constructor( private _github: GitHubLayerService ) {}
     public ngOnInit(): void {
-        this._github.getSavedState()
-                    .subscribe((transformData) => {
-                        this.transformRepos = [...transformData];
-                    });
+        this._github.getStoreState('REQUEST_USER')
+                    .subscribe((userState) => { this.userState = userState; });
+        this._github.getStoreState('REQUEST_REPOS')
+                    .subscribe((reposState) => { this.reposState = reposState; });
+
     }
-    public handleSearchValue(name: string) {
+
+    public handleSearchValue(name: string): void {
         this._github.updateUserName(name);
         this.subscriptionUser = this._github.getUser()
-                                            .subscribe((user) => this.user = user,
+                                            .subscribe((user) => { console.log(user); this._github.storeInitialState('STORE_USER', user); },
                                                        (err) =>  console.error(err) );
         this.subscriptionRepos = this._github.getUserRepos()
-                                             .subscribe((repos) => { this.repos = repos; } ,
+                                             .subscribe((repos) => { this.repos$ = repos; // to render filters and sorting
+                                                                     this._github.storeInitialState('STORE_REPOS', repos); } ,
                                                         (err) => console.error(err) );
     }
+
+    public commonSorting(name: string, params: any): void {
+        
+    }
+
 
     public ngOnDestroy(): void {
         this.subscriptionUser.unsubscribe();

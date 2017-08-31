@@ -3,11 +3,12 @@ import { Component, Input, EventEmitter } from '@angular/core';
 @Component({
     selector: 'card-repo-component',
     template: `
+        <!-- REPO CARD ITSELF -->
         <div class="repo-card"
-             [style.backgroundColor]="(repo?.fork) ? '#A5D6A7' : '#EF9A9A' "
              *ngFor="let repo of repos | slice:0:showCount"
              (click)="proceedToRepo(repo)"
              title="Individual repo card, where you can find data about Repo">
+            <!-- LEFT SIDE -->
             <div class="repo-card__left" >
                 <div class="level-section">
                      <span><b>name:</b> {{ repo?.name }}</span>
@@ -16,11 +17,21 @@ import { Component, Input, EventEmitter } from '@angular/core';
                 <div class="level-section">
                     <span><b>lang:</b> {{ repo?.language || 'not filled' }} </span>
                     <span><b>stars:</b> {{ (repo?.stargazers_count) ?  repo?.stargazers_count : 0 }} </span>
+                    <svg *ngIf="repo?.fork" fill="#8BC34A" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+    
+                    <svg *ngIf="!repo?.fork" fill="#F44336" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
                 </div>
             </div>
+            <!-- RIGHT SIDE -->
             <div class="repo-card__right">
                 <div class="action-section">
-                    <b>description:</b> <br/>
+                    <span><b>description:</b></span><br/>
                     {{ repo?.description || ' ' }}
                 </div>
             </div>
@@ -35,6 +46,7 @@ import { Component, Input, EventEmitter } from '@angular/core';
         align-items: space-between;
         transition: all 255ms cubic-bezier(0.0, 0.0, 0.2, 1);
         background: #BBDEFB;
+        position: relative;
     }
     .repo-card:hover {
         background: #90CAF9;
@@ -47,20 +59,21 @@ import { Component, Input, EventEmitter } from '@angular/core';
         flex: 4;
         margin-left: 10px;
         padding: 10px;
-        background: #DADADA;
-        border-right: 1px solid #eee;
+        background: #fafafa;
+        border-right: 1px solid #9e9e9e;
     }
     .repo-card__left .level-section span {
         white-space: nowrap;
         max-width: 230px;
         text-overflow: ellipsis;
         overflow: hidden;
+        
     }
     .repo-card__right {
         flex: 8;
         padding: 10px;
         display: flex;
-        background: #DADADA;
+        background: #fafafa;
         border-radius: 2px;
         flex-direction: column;
     }
@@ -68,6 +81,7 @@ import { Component, Input, EventEmitter } from '@angular/core';
     .level-section span {
         font-family: 'Roboto Mono';
         font-size: 14px;
+        color: rgba(0,0,0, .6);
     }
     .level-section {
         display:flex;
@@ -87,7 +101,8 @@ import { Component, Input, EventEmitter } from '@angular/core';
 export class CardRepoComponent {
     @Input() public repos: any[];
     @Input() public showCount: any;
-
+    
+    public testContent: 'yes';
     constructor(  ) {}
     public proceedToRepo(repo) {
         console.log(repo);

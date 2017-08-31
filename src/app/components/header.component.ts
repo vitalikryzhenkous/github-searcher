@@ -6,9 +6,6 @@ import { Component, Input } from '@angular/core';
         <header class="header-container">
             <div class="header-item name"><span>{{ ownerName }}</span></div>
             <div class="header-item avatar">
-            <figure>
-                <img [src]="dataObj?.avatar_url" [alt]="dataObj?.name" />
-            </figure>
             </div>
         </header>
     `,

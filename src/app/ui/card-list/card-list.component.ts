@@ -1,10 +1,8 @@
 import { Component, Input  } from '@angular/core';
 @Component({
     selector: 'card-list-component',
-    template: `
-        <h2>Card list component</h2>
-        <card-component [user]="userData"
-                        [repos]="reposData"></card-component>
+    template: `<card-component [user]="userData"
+                               [repos]="reposData"></card-component>
     `,
     styles: [``]
 })

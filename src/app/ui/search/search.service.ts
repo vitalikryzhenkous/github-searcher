@@ -1,10 +1,9 @@
+import { GitHubLayerService } from './../../services/github.layer.service';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 @Injectable()
 export class SearchService {
-    constructor() {}
-    public initialState: Subject<any> = new Subject();
-    public transformFilterState: Subject<any> = new Subject();
+    constructor( private _github: GitHubLayerService ) {}
     
     public filterBySorting(key, value: any, source: any[]) {
         return source.filter((el) => {
@@ -16,7 +15,7 @@ export class SearchService {
                     if (el[`${key}`] === Number(value) ) { return el; }
                     break;
                 default:
-                    console.log( value );
+                    console.log( 'DEFAULT', value );
                     break;
             }
         });
@@ -29,7 +28,7 @@ export class SearchService {
                     if (el[`${key}`] === value ) { return el; }
                     break;
                 default:
-                    console.log( value );
+                    console.log( 'DEFAULT', value );
                     break;
             }
         });

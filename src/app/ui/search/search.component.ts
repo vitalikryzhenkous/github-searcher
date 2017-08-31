@@ -11,6 +11,9 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
                        type="text"
                        name="searchParams"
                        #search
+                       required
+                       autofocus
+                       autocomplete
                        placeholder="Will show cards with repositories, filters, and sorting."
                        title="type here search parameters"/>
 
@@ -96,6 +99,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
         .sorting-item label,
         .filter-item label {
             padding-right: 10px;
+            color: rgba(0,0,0, .6);
         }
         .search-form__container {
             margin: 50px 0;
@@ -109,13 +113,31 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
             flex: 10;
             margin-right: 20px;
             outline: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            border: 1px solid transparent;
         }
         form .input:last-child {
             flex: 2;
+            cursor: pointer;
+            background: #fafafa;
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            color: rgba(0,0,0, .6);
+            border: 1px solid transparent;
         }
-        input:focus.txt {
+        form .input:last-child:hover {
+            background: #fbfbfb;
+            color: rgba(0,0,0, .8);
+        }
+        input, select {
+            padding: 2px 5px;
+            border: 1px solid #dadada;
+        }
+        input:focus {
             caret-color: #2196F3;
-            border: 2px solid #2196F3;
+            border: 1px solid #2196F3 !important;
             transition: all 255ms cubic-bezier(0.0, 0.0, 0.2, 1);
         }
         .txt, .btn {
@@ -137,13 +159,20 @@ export class SearchComponent {
         {id: 4, title: 'update',      name: 'update', holder: 'update date',         key: 'updated_at',        selected: false }
     ];
     constructor( private _search: SearchService, private _github: GitHubLayerService ) {}
-    public searchValueChanges(value: string): void {
-        this.searchParams.emit(value);
-    }
+
+    // Need to share when user click on submit of input / up to maincomponent
+    // public searchValueChanges(value: string): void {
+    //     this.searchParams.emit(value);
+    // }
+
+    // Need to share when user click on submit of input / up to maincomponent
+    // And Control the render view of filters & card width data
     public handleSubmitAction(value: string): void {
         this.isHide = true;
         this.searchParams.emit(value);
     }
+
+    // Common Handler for sorting inputs
     public handleCommonKeyup(key: string, value: any): void {
         this.sortings.filter((el) => {
             if ( el.key !== key && value.length !== 0 ) {
@@ -153,13 +182,16 @@ export class SearchComponent {
             }
         });
         const result = this._search.filterBySorting(key, value, this.reposData);
-        console.log(result);
+        this._github.storeInitialState('STORE_REPOS', result);
+        console.log('CHECK handleCommonKeyup: ', result);
     }
 
     public handleCommonFilter(key: string, value: any) {
-        this.checkedState = !this.checkedState;
+        if ( key === 'has_issue') {
+            this.checkedState = !this.checkedState;
+        }
         const result = this._search.filterByFilters(key, value, this.reposData);
-        this._github.saveState(result);
+        this._github.storeInitialState('STORE_REPOS', result);
     }
 
 }

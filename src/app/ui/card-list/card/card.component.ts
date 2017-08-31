@@ -67,14 +67,19 @@ import { Component, Input } from '@angular/core';
             height: 300px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         }
+        figcaption {
+            padding: 0 1px;
+        }
         figcaption .caption-box {
             padding: 5px;
-            background: #dadada;
+            background: #fafafa;
             margin: 7px 0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            
         }
         .caption-box span {
             font-family: 'Roboto Mono', monospace;
+            color: rgba(0,0,0, .6);
         }
         .caption-box span:first-child {
             display: block;
@@ -86,10 +91,24 @@ import { Component, Input } from '@angular/core';
             width: 100%;
         }
         .load-more {
-            padding: 5px 10px;
+            border: none;
+            padding: 10px;
             text-transform: uppercase;
             outline: none;
             width: 100%;
+            background-color: rgba(0,0,0, .1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            font-weight: bold;
+        }
+        .load-more:hover {
+            cursor: pointer;
+            background-color: rgba(0,0,0, .2);
+            color: #fafafa;
+        }
+        .load-more:disabled {
+            pointer-events: none;
+            background-color: rgba(0,0,0, .1);
+            color: rgba(0,0,0, .1);
         }
     `]
 })
