@@ -1,14 +1,18 @@
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { GitHubLayerService } from './../../services/github.layer.service';
+import { Component, Input, Output, EventEmitter, HostListener, OnDestroy, AfterViewChecked, OnInit } from '@angular/core';
+import { Subscription } from "rxjs/Subscription";
 @Component({
     selector: 'dialog-window',
     template: `
-        <div class="dialog-overlay" >
+        <div class="dialog-overlay">
             <div class="dialog-wrapper">
                 <div class="dialog-header">
                     header
                 </div>
                 <div class="dialog-main">
-                    main
+                    <div class="main-item" *ngFor="let cont of conts">
+                        {{ cont.login }}
+                    </div>
                 </div>
                 <div class="dialog-footer__action">
                     action foooter
@@ -40,17 +44,43 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
         }
     `]
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy, OnInit {
     public isClicked: boolean;
     @Input() public cardRepoState: boolean;
     @Output() public emitFromDialog: EventEmitter<boolean> = new EventEmitter();
+    public subscriptionOne: Subscription;
+    public subscriptionTwo: Subscription;
+    public subscriptionThree: Subscription;
+    
+    public langs: any[];
+    public conts: any[];
+    public comms: any[];
+    constructor( private _github: GitHubLayerService ) {}
+    public ngOnInit(): void {
+        this.subscriptionOne = this._github.getStoreState('REQUEST_LANGUAGE')
+                                           .subscribe( (langs) => { this.langs = langs; console.log(this.langs); },
+                                                       (err) => console.error(err) );
 
+        this.subscriptionTwo = this._github.getStoreState('REQUEST_CONTRIBUTORS')
+                                           .subscribe((conts) => { this.conts = conts; console.log(this.conts); },
+                                                      (err) => console.error(err));
+                                                      
+        this.subscriptionThree = this._github.getStoreState('REQUEST_COMMENTS')
+                                           .subscribe((comms) => this.comms = comms,
+                                                      (err) => console.error(err));
+    }
     @HostListener( 'click', ['$event'])
     public handleClick(e) {
         if ( !(e.target.className === 'dialog-wrapper') ) {
             this.isClicked = !this.isClicked && !this.cardRepoState;
             this.emitFromDialog.emit(this.isClicked);
         }
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptionOne.unsubscribe();
+        this.subscriptionTwo.unsubscribe();
+        this.subscriptionThree.unsubscribe();
     }
 
 }

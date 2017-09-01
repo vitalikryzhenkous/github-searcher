@@ -10,8 +10,21 @@ export class GitHubLayerService {
 
     public user$: any = new Subject();
     public repos$: any = new Subject();
+    public language$: any = new Subject();
+    public contributors$: any = new Subject();
+    public comments$: any = new Subject();
 
     constructor( private _http: Http ) { }
+
+    // Common method for Languages & contributors & top 5
+    public getDialogData(repoParams: any, endpoint: string) {
+            // GET /repos/:owner/:repo/languages
+            // GET /repos/:owner/:repo/contributors
+            // GET /repos/:owner/:repo/comments
+            const URL = `https://api.github.com/repos/${this._userName}/${repoParams}/${endpoint}`;
+            return this._http.get(URL).map( (res) => res.json() );
+    }
+
     // When user will type in input it will-change
     public updateUserName(username) {
         this._userName = username;
@@ -40,6 +53,15 @@ export class GitHubLayerService {
             case 'STORE_REPOS':
                 this.repos$.next(payload);
                 break;
+            case 'STORE_LANGUAGE':
+                this.language$.next(payload);
+                break;
+            case 'STORE_CONTRIBUTORS':
+                this.contributors$.next(payload);
+                break;
+            case 'STORE_COMMENTS':
+                this.comments$.next(payload);
+                break;
             default:
                 console.log('DEFAULT at storeInitialState');
                 break;
@@ -53,6 +75,12 @@ export class GitHubLayerService {
                 return this.user$.asObservable();
             case 'REQUEST_REPOS':
                 return this.repos$.asObservable();
+            case 'REQUEST_LANGUAGE':
+                return this.language$.asObservable();
+            case 'REQUEST_CONTRIBUTORS':
+                return this.contributors$.asObservable();
+            case 'REQUEST_COMMENTS':
+                return this.comments$.asObservable();
             default:
                 console.log('DEFAULT at storeInitialState');
                 break;

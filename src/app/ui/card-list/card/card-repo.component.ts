@@ -1,9 +1,13 @@
-import { Component, Input, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
+import { GitHubLayerService } from './../../../services/github.layer.service';
+import { Component, Input, EventEmitter, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'card-repo-component',
     template: `
-        <dialog-window [cardRepoState]="isClicked" (emitFromDialog)="handleEmitter($event)" *ngIf="isClicked">
+        <dialog-window [cardRepoState]="isClicked"
+                       (emitFromDialog)="handleEmitter($event)"
+                       *ngIf="isClicked">
         </dialog-window>
         <!-- REPO CARD ITSELF -->
         <div class="repo-card"
@@ -126,20 +130,36 @@ import { Component, Input, EventEmitter } from '@angular/core';
       }
     `]
 })
-export class CardRepoComponent {
+export class CardRepoComponent implements OnDestroy {
     @Input() public repos: any[];
     @Input() public showCount: any;
 
+    public subscriptionOne: Subscription;
+    public subscriptionTwo: Subscription;
+    public subscriptionThree: Subscription;
+
     public isClicked: boolean;
     
-    public testContent: 'yes';
-    constructor(  ) {}
+    constructor( private _github: GitHubLayerService ) {}
     public proceedToRepo(e, repo) {
+        this.subscriptionOne = this._github.getDialogData( repo.name, 'languages')
+                                           .subscribe( (res) => this._github.storeInitialState('STORE_LANGUAGE', res));
+        this.subscriptionTwo = this._github.getDialogData( repo.name, 'contributors' )
+                                           .subscribe( (res) => this._github.storeInitialState('STORE_CONTRIBUTORS', res));
+        this.subscriptionThree = this._github.getDialogData( repo.name, 'comments' )
+                                              .subscribe( (res) => { console.log(res);
+                                                                     this._github.storeInitialState('STORE_COMMENTS', res); });
         this.isClicked = !this.isClicked;
         // (repo.fork) ? window.location.href = `${repo.forks_url}` : window.location.href = `${repo.html_url}`;
     }
 
     public handleEmitter(emitValue) {
         this.isClicked = emitValue;
+    }
+
+    public ngOnDestroy() {
+        this.subscriptionOne.unsubscribe();
+        this.subscriptionTwo.unsubscribe();
+        this.subscriptionThree.unsubscribe();
     }
 }
