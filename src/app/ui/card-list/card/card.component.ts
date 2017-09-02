@@ -111,6 +111,9 @@ import { Component, Input } from '@angular/core';
             background-color: rgba(0,0,0, .1);
             color: rgba(0,0,0, .1);
         }
+        .repos_wrapper {
+            position: relative;
+        }
         @media screen and (min-width: 768px) and (max-width: 1160px) { 
             .card-item__wrapper {
                 max-width: 760px;
