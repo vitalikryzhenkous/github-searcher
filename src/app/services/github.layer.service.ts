@@ -21,6 +21,7 @@ export class GitHubLayerService {
             // GET /repos/:owner/:repo/languages
             // GET /repos/:owner/:repo/contributors
             // GET /repos/:owner/:repo/comments
+            console.log('CHECK ', this._userName, repoParams, endpoint );
             const URL = `https://api.github.com/repos/${this._userName}/${repoParams}/${endpoint}`;
             return this._http.get(URL).map( (res) => res.json() );
     }

@@ -6,6 +6,7 @@ import { Component, Input, EventEmitter, OnDestroy } from '@angular/core';
     selector: 'card-repo-component',
     template: `
         <dialog-window [cardRepoState]="isClicked"
+                       [repoData]="selectedRepo"
                        (emitFromDialog)="handleEmitter($event)"
                        *ngIf="isClicked">
         </dialog-window>
@@ -20,7 +21,7 @@ import { Component, Input, EventEmitter, OnDestroy } from '@angular/core';
                      <span><b>name:</b> {{ repo?.name }}</span>
                      <span><b>update:</b> {{ repo?.updated_at | date  }}</span>
                 </div>
-                <div class="level-section">
+                <div class="level-section" style="align-items: center;">
                     <span><b>lang:</b> {{ repo?.language || 'not filled' }} </span>
                     <span><b>stars:</b> {{ (repo?.stargazers_count) ?  repo?.stargazers_count : 0 }} </span>
                     <svg *ngIf="repo?.fork" fill="#8BC34A" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -133,6 +134,7 @@ import { Component, Input, EventEmitter, OnDestroy } from '@angular/core';
 export class CardRepoComponent implements OnDestroy {
     @Input() public repos: any[];
     @Input() public showCount: any;
+    public selectedRepo: any[] = [];
 
     public subscriptionOne: Subscription;
     public subscriptionTwo: Subscription;
@@ -142,6 +144,7 @@ export class CardRepoComponent implements OnDestroy {
     
     constructor( private _github: GitHubLayerService ) {}
     public proceedToRepo(e, repo) {
+        this.selectedRepo = repo;
         this.subscriptionOne = this._github.getDialogData( repo.name, 'languages')
                                            .subscribe( (res) => this._github.storeInitialState('STORE_LANGUAGE', res));
         this.subscriptionTwo = this._github.getDialogData( repo.name, 'contributors' )
